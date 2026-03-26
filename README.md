@@ -7,6 +7,11 @@
 
 The D365 Demo Copilot takes customer requests in natural language, generates structured demo plans, and executes them in a live Dynamics 365 browser session with visual overlays, voice narration, and interactive controls — all through an in-browser sidecar chat panel.
 
+
+<img width="829" height="427" alt="Demo Copilot Screen shot" src="https://github.com/user-attachments/assets/e78ed77f-5bd3-4840-b8be-eddca99111d0" />
+
+Demo Video: https://youtu.be/DfJVVV22tCw?si=MYX2P46hUCiuX-t7
+
 ## Key Features
 
 | Feature | Description |
