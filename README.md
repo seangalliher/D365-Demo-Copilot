@@ -119,7 +119,7 @@ graph TB
 
 - **Python 3.10+**
 - **Node.js** (required by Playwright)
-- **Access to a D365 environment** (Project Operations, CE, F&O, or SCM)
+- **Access to a D365 environment** (CE, F&O)
 - **One of** the following LLM providers:
   - Azure OpenAI endpoint + API key
   - GitHub PAT (uses GitHub Models — free for Copilot subscribers)
