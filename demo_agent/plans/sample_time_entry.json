@@ -1,0 +1,209 @@
+{
+  "id": "sample-time-entry-demo",
+  "title": "Project Time Tracking in D365",
+  "subtitle": "For Zava Engineering — Project Operations Demo",
+  "customer_request": "Show me how employees track their time in D365 Project Operations",
+  "estimated_duration_minutes": 10,
+  "d365_base_url": "https://projectopscoreagentimplemented.crm.dynamics.com",
+  "sections": [
+    {
+      "id": "section-navigate-projects",
+      "title": "Project Overview",
+      "description": "Navigate to the Projects area and review an active project",
+      "bpc_reference": "80.10.010",
+      "steps": [
+        {
+          "id": "nav-to-projects",
+          "title": "Navigate to Projects",
+          "tell_before": "Let's start by navigating to the Projects area in Dynamics 365. This is the central hub where project managers oversee all active engagements.",
+          "actions": [
+            {
+              "action_type": "click",
+              "selector": "li[aria-label='Projects']",
+              "value": null,
+              "description": "Click Projects in the left navigation",
+              "tooltip": "Project Hub",
+              "delay_before_ms": 500,
+              "delay_after_ms": 1500
+            }
+          ],
+          "tell_after": "Here we see all active projects. Each row shows the project name, customer, status, and contracting organizational unit — giving managers a quick overview of their portfolio.",
+          "value_highlight": {
+            "title": "Portfolio Visibility",
+            "description": "Project managers get a single view of all engagements across Zava's US, Canadian, and Mexican operations.",
+            "metric_value": "100%",
+            "metric_label": "cross-entity visibility",
+            "position": "top-right"
+          },
+          "pause_after": false,
+          "caption_speed": 25
+        },
+        {
+          "id": "open-project",
+          "title": "Open a Project",
+          "tell_before": "Now let's open a specific project to see its details — the work breakdown structure, team assignments, and financial tracking.",
+          "actions": [
+            {
+              "action_type": "spotlight",
+              "selector": "div[data-id='cell-0-1'] a",
+              "value": null,
+              "description": "Highlight the first project in the list",
+              "tooltip": "Click to open project",
+              "delay_before_ms": 500,
+              "delay_after_ms": 1000
+            },
+            {
+              "action_type": "click",
+              "selector": "div[data-id='cell-0-1'] a",
+              "value": null,
+              "description": "Open the first project record",
+              "tooltip": null,
+              "delay_before_ms": 300,
+              "delay_after_ms": 2000
+            }
+          ],
+          "tell_after": "We've opened the project record. Notice the header shows key information at a glance — the project manager, contracting unit, and current status.",
+          "value_highlight": null,
+          "pause_after": false,
+          "caption_speed": 25
+        }
+      ],
+      "transition_text": "Now that we've seen the project structure, let's look at how team members actually track their time against project tasks."
+    },
+    {
+      "id": "section-time-entry",
+      "title": "Weekly Time Entry",
+      "description": "Create and submit a time entry for a project task",
+      "bpc_reference": "80.40.050",
+      "steps": [
+        {
+          "id": "nav-to-time-entries",
+          "title": "Navigate to Time Entries",
+          "tell_before": "Let's switch to the Time Entries view. This is where your team members log their hours each week — think of it as their digital timesheet.",
+          "actions": [
+            {
+              "action_type": "click",
+              "selector": "li[aria-label='Time Entries']",
+              "value": null,
+              "description": "Navigate to Time Entries list",
+              "tooltip": "Time Entry Hub",
+              "delay_before_ms": 500,
+              "delay_after_ms": 2000
+            }
+          ],
+          "tell_after": "The Time Entry grid shows a calendar-based view. Team members can see their entire week at a glance and quickly enter hours per day.",
+          "value_highlight": null,
+          "pause_after": false,
+          "caption_speed": 25
+        },
+        {
+          "id": "create-time-entry",
+          "title": "Create New Time Entry",
+          "tell_before": "Let's create a new time entry. Notice how the system guides the user through selecting the project, task, and role — ensuring accurate cost allocation every time.",
+          "actions": [
+            {
+              "action_type": "click",
+              "selector": "button[aria-label='New']",
+              "value": null,
+              "description": "Click New to create a time entry",
+              "tooltip": "Create new time entry",
+              "delay_before_ms": 500,
+              "delay_after_ms": 1500
+            },
+            {
+              "action_type": "spotlight",
+              "selector": "input[aria-label='Project']",
+              "value": null,
+              "description": "Highlight the Project lookup field",
+              "tooltip": "Select the project for this time",
+              "delay_before_ms": 500,
+              "delay_after_ms": 1500
+            },
+            {
+              "action_type": "spotlight",
+              "selector": "input[aria-label='Duration']",
+              "value": null,
+              "description": "Highlight the Duration field",
+              "tooltip": "Enter hours worked",
+              "delay_before_ms": 500,
+              "delay_after_ms": 1000
+            }
+          ],
+          "tell_after": "The time entry form captures all the information needed for accurate billing — project, task, role, and duration. This data flows directly into cost calculations and client invoices.",
+          "value_highlight": {
+            "title": "Accurate Billing",
+            "description": "Time entries automatically link to role-based price lists, ensuring every hour is billed at the correct rate with zero manual calculation.",
+            "metric_value": "99.5%",
+            "metric_label": "billing accuracy rate",
+            "position": "top-right"
+          },
+          "pause_after": true,
+          "caption_speed": 25
+        },
+        {
+          "id": "submit-time-entry",
+          "title": "Submit for Approval",
+          "tell_before": "Once the time entry is complete, the team member submits it for approval. This triggers the built-in approval workflow — no emails, no spreadsheets, no chasing people down.",
+          "actions": [
+            {
+              "action_type": "spotlight",
+              "selector": "button[aria-label='Submit']",
+              "value": null,
+              "description": "Highlight the Submit button",
+              "tooltip": "Submit for manager approval",
+              "delay_before_ms": 500,
+              "delay_after_ms": 2000
+            }
+          ],
+          "tell_after": "The time entry is now in the approval queue. The project manager gets notified and can approve or return it — all within D365, creating a complete audit trail.",
+          "value_highlight": {
+            "title": "Streamlined Approvals",
+            "description": "Built-in approval workflows replace email chains and spreadsheets, cutting approval cycle time dramatically.",
+            "metric_value": "75%",
+            "metric_label": "faster approval cycles",
+            "position": "top-right"
+          },
+          "pause_after": false,
+          "caption_speed": 25
+        }
+      ],
+      "transition_text": "With time entries submitted, let's see what happens on the approval side — how project managers review and approve their team's time."
+    },
+    {
+      "id": "section-approvals",
+      "title": "Time Approval Workflow",
+      "description": "Review and approve submitted time entries",
+      "bpc_reference": "80.40.070",
+      "steps": [
+        {
+          "id": "nav-to-approvals",
+          "title": "Navigate to Approvals",
+          "tell_before": "Now let's step into the project manager's shoes. They navigate to the Approvals area to review all pending time and expense submissions from their team.",
+          "actions": [
+            {
+              "action_type": "click",
+              "selector": "li[aria-label='Approvals']",
+              "value": null,
+              "description": "Navigate to Approvals list",
+              "tooltip": "Approval Queue",
+              "delay_before_ms": 500,
+              "delay_after_ms": 2000
+            }
+          ],
+          "tell_after": "The approval view shows all pending items. Managers can approve individually or in bulk, with full visibility into who submitted what, for which project and task.",
+          "value_highlight": {
+            "title": "Financial Control",
+            "description": "Every hour and every expense goes through a governed approval process before hitting financials — protecting revenue and ensuring compliance.",
+            "metric_value": "$0",
+            "metric_label": "revenue leakage from unapproved time",
+            "position": "top-right"
+          },
+          "pause_after": false,
+          "caption_speed": 25
+        }
+      ],
+      "transition_text": null
+    }
+  ],
+  "closing_text": "We've just walked through the complete time tracking lifecycle in Dynamics 365 Project Operations — from entering time, to approval, to financial impact. This same flow works across all of Zava's entities in the US, Canada, and Mexico, with automatic multi-currency handling and role-based pricing. What questions do you have, or would you like to explore any area in more depth?"
+}

@@ -1,0 +1,118 @@
+%% Agent ↔ Playwright Communication Architecture
+%% Shows how the demo agent controls the browser and injects overlays
+
+graph TD
+    subgraph Agent["Agent Layer"]
+        Executor["🎬 Demo Executor<br/><b>agent/executor.py</b>"]
+    end
+
+    subgraph BrowserLayer["Browser Layer (Playwright async API)"]
+        Controller["🌐 BrowserController<br/><b>browser/controller.py</b>"]
+        D365Pages["📄 D365 Page Helpers<br/><b>browser/d365_pages.py</b>"]
+        OverlayMgr["🎨 Overlay Manager<br/><b>browser/overlay_manager.py</b>"]
+    end
+
+    subgraph PlaywrightAPI["Playwright Internals"]
+        PW["async_playwright().start()"]
+        Browser["chromium.launch()<br/><i>Chromium Instance</i>"]
+        Context["BrowserContext<br/><i>auth state · viewport</i>"]
+        Page["Page Object<br/><i>Single active tab</i>"]
+    end
+
+    subgraph PageMethods["Page Methods Used"]
+        goto["page.goto()"]
+        click["page.click()"]
+        fill["page.fill()"]
+        type["page.type()"]
+        evaluate["page.evaluate()"]
+        screenshot["page.screenshot()"]
+        waitFor["page.wait_for_selector()"]
+    end
+
+    subgraph Overlay["Injected Overlay Engine (JS/CSS in D365 page)"]
+        Spotlight["🔦 Spotlight<br/>SVG mask + glow"]
+        Captions["📝 Caption Bar<br/>Typewriter subtitles"]
+        ValueCard["💰 Value Card<br/>Metrics callout"]
+        ClickFX["✨ Click Ripple<br/>Visual feedback"]
+        Progress["📊 Progress Bar<br/>Step dots"]
+    end
+
+    subgraph Target["Target Environment"]
+        D365["Dynamics 365<br/>Project Operations<br/><i>projectopscoreagentimplemented<br/>.crm.dynamics.com</i>"]
+    end
+
+    subgraph MCPLayer["MCP Layer (Separate Channel)"]
+        MCPMgr["MCP Manager<br/><b>mcp/manager.py</b>"]
+        MCPClient["MCP Client<br/><b>mcp/client.py</b>"]
+        Dataverse["Dataverse API<br/><i>CRUD operations</i>"]
+    end
+
+    %% Agent → Browser Layer
+    Executor -->|"execute actions"| Controller
+    Executor -->|"D365 navigation"| D365Pages
+    Executor -->|"show overlays"| OverlayMgr
+    D365Pages -->|"selectors & forms"| Controller
+
+    %% Browser Layer → Playwright
+    Controller -->|"launch browser"| PW
+    PW --> Browser
+    Browser -->|"new_context(storage_state)"| Context
+    Context -->|"new_page()"| Page
+
+    %% Page → Methods
+    Page --- goto
+    Page --- click
+    Page --- fill
+    Page --- type
+    Page --- evaluate
+    Page --- screenshot
+    Page --- waitFor
+
+    %% Controller uses page methods
+    Controller -.->|"navigate()"| goto
+    Controller -.->|"click()"| click
+    Controller -.->|"fill()"| fill
+    Controller -.->|"type_slowly()"| type
+    Controller -.->|"screenshot()"| screenshot
+    Controller -.->|"wait_for()"| waitFor
+
+    %% Overlay injection via evaluate
+    OverlayMgr -->|"page.evaluate()<br/>inject JS/CSS"| evaluate
+    evaluate -->|"DOM manipulation"| Spotlight
+    evaluate -->|"DOM manipulation"| Captions
+    evaluate -->|"DOM manipulation"| ValueCard
+    evaluate -->|"DOM manipulation"| ClickFX
+    evaluate -->|"DOM manipulation"| Progress
+
+    %% Page methods → D365
+    goto -->|"HTTP navigation"| D365
+    click -->|"DOM interaction"| D365
+    fill -->|"DOM interaction"| D365
+    type -->|"DOM interaction"| D365
+    waitFor -->|"DOM polling"| D365
+
+    %% Overlay rendered inside D365
+    Spotlight -.->|"rendered in"| D365
+    Captions -.->|"rendered in"| D365
+
+    %% MCP — separate data channel
+    Executor -->|"data operations"| MCPMgr
+    MCPMgr --> MCPClient
+    MCPClient -->|"Streamable HTTP / SSE"| Dataverse
+
+    %% Styling
+    classDef agentNode fill:#FFF3E0,stroke:#E65100,stroke-width:2px,color:#BF360C
+    classDef browserNode fill:#E0F7FA,stroke:#00695C,stroke-width:2px,color:#004D40
+    classDef pwNode fill:#E3F2FD,stroke:#1565C0,stroke-width:2px,color:#0D47A1
+    classDef methodNode fill:#F1F8E9,stroke:#33691E,stroke-width:1px,color:#1B5E20
+    classDef overlayNode fill:#FFF8E1,stroke:#F9A825,stroke-width:2px,color:#F57F17
+    classDef targetNode fill:#FCE4EC,stroke:#C62828,stroke-width:2px,color:#B71C1C
+    classDef mcpNode fill:#F3E5F5,stroke:#6A1B9A,stroke-width:2px,color:#4A148C
+
+    class Executor agentNode
+    class Controller,D365Pages,OverlayMgr browserNode
+    class PW,Browser,Context,Page pwNode
+    class goto,click,fill,type,evaluate,screenshot,waitFor methodNode
+    class Spotlight,Captions,ValueCard,ClickFX,Progress overlayNode
+    class D365 targetNode
+    class MCPMgr,MCPClient,Dataverse mcpNode
